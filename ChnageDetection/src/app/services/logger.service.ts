@@ -27,7 +27,6 @@ export class LoggerService {
 
 		console.log('-----------------------');
 		console.log('Cycle took', Math.round(cycleTime), 'ms');
-		console.log('Rendered', numComponentsRendered, 'components');
 
 		console.groupCollapsed('Rendered components');
 		this.componentsRendered.forEach((timesRendered, componentId) => {
@@ -35,6 +34,7 @@ export class LoggerService {
 			numComponentsRendered++;
 		});
 		console.groupEnd();
+		console.log('Rendered', numComponentsRendered, 'components');
 		console.log('-----------------------');
 	}
 
@@ -47,7 +47,7 @@ export class LoggerService {
 				this.componentsRendered.set(componentId, 1);
 			}
 		} else {
-			console.log('Rendered', componentId, 'after root cd cycle');
+			console.log('Rendered', componentId, 'outside root cd cycle');
 		}
 	}
 }
