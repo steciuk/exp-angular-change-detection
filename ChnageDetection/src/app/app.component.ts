@@ -1,4 +1,5 @@
 import { CHANGE_DETECTION } from 'src/app/Config';
+import { LoggerService } from 'src/app/services/logger.service';
 
 import { Component } from '@angular/core';
 
@@ -9,8 +10,10 @@ import { Component } from '@angular/core';
 	changeDetection: CHANGE_DETECTION,
 })
 export class AppComponent {
+	constructor(private readonly loggerService: LoggerService) {}
+
 	ngDoCheck() {
-		console.log('DoCheck');
+		this.loggerService.startCycle();
 	}
 
 	// ngOnChanges() {
@@ -34,7 +37,7 @@ export class AppComponent {
 	// }
 
 	ngAfterViewChecked() {
-		console.log('AfterViewChecked');
+		this.loggerService.endCycle();
 	}
 
 	// ngOnDestroy() {

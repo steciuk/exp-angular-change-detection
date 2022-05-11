@@ -10,6 +10,7 @@ import { Component, Input } from '@angular/core';
 	changeDetection: CHANGE_DETECTION,
 })
 export class ChildComponent extends BaseComponent {
+	@Input() parentId?: string;
 	@Input() valueObject!: { value: number };
 	@Input() layerNumber!: number;
 	@Input() numberInLayer!: number;

@@ -2,6 +2,7 @@ import {
 	NUMBER_OF_COMPONENTS_IN_LAYER,
 	NUMBER_OF_LAYERS
 } from 'src/app/Config';
+import { LoggerService } from 'src/app/services/logger.service';
 
 import { Component } from '@angular/core';
 
@@ -12,28 +13,34 @@ export abstract class BaseComponent {
 	numberOfLayers = NUMBER_OF_LAYERS;
 
 	abstract layerNumber: number;
+	abstract parentId?: string;
 	abstract numberInLayer: number;
 	abstract valueObject: { value: number };
 
 	numTimesRendered = 0;
+	id = '';
 
 	lowerLayerNumber!: number;
 	lowerLayerValueObject = { value: 0 };
-	// abstract log(event: string, data: string): void;
+
+	constructor(private readonly loggerService: LoggerService) {}
 
 	numOfComponentsArray = Array(NUMBER_OF_COMPONENTS_IN_LAYER)
 		.fill(0)
 		.map((x, i) => i + 1);
 
-	printName(): string {
+	ngOnInit() {
+		this.id = (this.parentId ? this.parentId + '-' : '') + this.numberInLayer;
+		this.lowerLayerNumber = this.layerNumber + 1;
+	}
+
+	render(): string {
 		this.numTimesRendered++;
-		console.log('Rendered', `${this.layerNumber}-${this.numberInLayer}`, this.numTimesRendered);
+		this.loggerService.notifyOfRender(this.id);
 		return '';
 	}
 
-	log(): void {
-		console.log('Click!');
-	}
+	emptyFunction(): void {}
 
 	setChildValue(): void {
 		this.lowerLayerValueObject = { value: Math.random() };
@@ -50,37 +57,4 @@ export abstract class BaseComponent {
 	mutateSelfValue(): void {
 		this.valueObject.value = Math.random();
 	}
-
-	// ngOnChanges() {
-	// 	this.log('OnChanges', this.name + '-' + this.number);
-	// }
-
-	ngOnInit() {
-		this.lowerLayerNumber = this.layerNumber + 1;
-		// this.log('OnInit', this.name + '-' + this.number);
-	}
-
-	// ngOnChecked() {
-	// 	this.log('OnCheck', this.name + '-' + this.number);
-	// }
-
-	// ngAfterContentInit() {
-	// 	this.log('AfterContentInit', this.name + '-' + this.number);
-	// }
-
-	// ngAfterContentChecked() {
-	// 	this.log('AfterContentChecked', this.name + '-' + this.number);
-	// }
-
-	// ngAfterViewInit() {
-	// 	this.log('AfterViewInit', this.name + '-' + this.number);
-	// }
-
-	// ngAfterViewChecked() {
-	// 	this.log('AfterViewChecked', this.name + '-' + this.number);
-	// }
-
-	// ngOnDestroy() {
-	// 	this.log('OnDestroy', this.name + '-' + this.number);
-	// }
 }

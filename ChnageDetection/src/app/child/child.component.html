@@ -1,6 +1,8 @@
 <div [style.padding-left]="layerNumber * 10 + 'px'">
-	<p>Layer: {{ layerNumber }} Number in layer: {{ numberInLayer }} Value: {{ valueObject.value }}</p>
-	<button (click)="log()">Console.log()</button>
+	<!-- <p>Layer: {{ layerNumber }} Number in layer: {{ numberInLayer }} Value: {{ valueObject.value }}</p> -->
+	<p>Id: {{ id }} Value: {{ valueObject.value }}</p>
+
+	<button (click)="emptyFunction()">Click</button>
 	<button (click)="setSelfValue()">Set self value</button>
 	<button (click)="mutateSelfValue()">Mutate self value</button>
 	<button (click)="setChildValue()">Set child value</button>
@@ -8,10 +10,11 @@
 	<div *ngIf="layerNumber < numberOfLayers">
 		<app-child
 			*ngFor="let numOfComponent of numOfComponentsArray"
+			[parentId]="id"
 			[valueObject]="lowerLayerValueObject"
 			[numberInLayer]="numOfComponent"
 			[layerNumber]="lowerLayerNumber"
 		></app-child>
 	</div>
 </div>
-<p>{{ printName() }}</p>
+<p>{{ render() }}</p>
