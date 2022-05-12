@@ -20,8 +20,9 @@ export class LoggerService {
 	}
 
 	endCycle(): void {
-		console.log('Main cd cycle finished');
-		this.end = performance.now();
+		console.log('-----------------------');
+		const cycleTime = performance.now() - this.start;
+		console.log('Main cycle took', Math.round(cycleTime), 'ms');
 	}
 
 	notifyOfRender(componentId: string) {
@@ -34,13 +35,10 @@ export class LoggerService {
 	}
 
 	logResults(): void {
-		const cycleTime = this.end - this.start;
 		let numComponentsRendered = 0;
 		let totalRenders = 0;
 
-		console.log('-----------------------');
-		console.log('Cycle took', Math.round(cycleTime), 'ms');
-
+		console.log('Results for last cycle: ');
 		console.groupCollapsed('Rendered components');
 		this.componentsRendered.forEach((timesRendered, componentId) => {
 			console.log(componentId, 'rendered', timesRendered, 'times');
