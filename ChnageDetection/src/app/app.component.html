@@ -1,1 +1,5 @@
-<app-child [valueObject]="{ value: 0 }" [numberInLayer]="1" [layerNumber]="0"></app-child>
+<button (click)="switchZones()">Toggle ngZone</button>
+<h2 class="ng-zone-disabled" *ngIf="noop">ngZone disabled</h2>
+<h2 class="ng-zone-enabled" *ngIf="!noop">ngZone enabled</h2>
+<button #logResultsBtn class="logger">Log results</button>
+<app-child [value]="0" [numberInLayer]="1" [layerNumber]="0"></app-child>

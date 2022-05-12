@@ -1,7 +1,7 @@
 import {
 	NUMBER_OF_COMPONENTS_IN_LAYER,
 	NUMBER_OF_LAYERS
-} from 'src/app/Config';
+} from 'src/app/config';
 
 export function getTotalNumOfComponents(): number {
 	return (

@@ -1,5 +1,5 @@
 import { BaseComponent } from 'src/app/base/base.component';
-import { CHANGE_DETECTION } from 'src/app/Config';
+import { CHANGE_DETECTION } from 'src/app/config';
 
 import { Component, Input } from '@angular/core';
 
@@ -11,7 +11,7 @@ import { Component, Input } from '@angular/core';
 })
 export class ChildComponent extends BaseComponent {
 	@Input() parentId?: string;
-	@Input() valueObject!: { value: number };
+	@Input() value!: number;
 	@Input() layerNumber!: number;
 	@Input() numberInLayer!: number;
 }

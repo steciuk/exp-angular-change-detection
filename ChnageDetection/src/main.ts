@@ -5,8 +5,11 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 if (environment.production) {
-  enableProdMode();
+	enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+const compilerOptions = localStorage.getItem('ng-zone') ? { ngZone: 'noop' as const } : undefined;
+
+platformBrowserDynamic()
+	.bootstrapModule(AppModule, compilerOptions)
+	.catch((err) => console.error(err));

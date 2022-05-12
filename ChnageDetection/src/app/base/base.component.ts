@@ -1,7 +1,8 @@
 import {
+	DELAY_IN_COMPONENTS_RENDER,
 	NUMBER_OF_COMPONENTS_IN_LAYER,
 	NUMBER_OF_LAYERS
-} from 'src/app/Config';
+} from 'src/app/config';
 import { LoggerService } from 'src/app/services/logger.service';
 
 import { Component } from '@angular/core';
@@ -15,13 +16,13 @@ export abstract class BaseComponent {
 	abstract layerNumber: number;
 	abstract parentId?: string;
 	abstract numberInLayer: number;
-	abstract valueObject: { value: number };
+	abstract value: number;
 
 	numTimesRendered = 0;
 	id = '';
 
 	lowerLayerNumber!: number;
-	lowerLayerValueObject = { value: 0 };
+	lowerLayerValueObject = 0;
 
 	constructor(private readonly loggerService: LoggerService) {}
 
@@ -35,26 +36,26 @@ export abstract class BaseComponent {
 	}
 
 	render(): string {
+		if (DELAY_IN_COMPONENTS_RENDER > 0) this.wait(DELAY_IN_COMPONENTS_RENDER);
+
 		this.numTimesRendered++;
 		this.loggerService.notifyOfRender(this.id);
 		return '';
 	}
 
-	emptyFunction(): void {}
-
 	setChildValue(): void {
-		this.lowerLayerValueObject = { value: Math.random() };
-	}
-
-	mutateChildValue(): void {
-		this.lowerLayerValueObject.value = Math.random();
+		this.lowerLayerValueObject = Math.random();
 	}
 
 	setSelfValue(): void {
-		this.valueObject = { value: Math.random() };
+		this.value = Math.random();
 	}
 
-	mutateSelfValue(): void {
-		this.valueObject.value = Math.random();
+	private wait(ms: number): void {
+		const start = Date.now();
+		let now = start;
+		while (now - start < ms) {
+			now = Date.now();
+		}
 	}
 }

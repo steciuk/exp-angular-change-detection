@@ -1,7 +1,7 @@
-import { CHANGE_DETECTION } from 'src/app/Config';
+import { CHANGE_DETECTION } from 'src/app/config';
 import { LoggerService } from 'src/app/services/logger.service';
 
-import { Component } from '@angular/core';
+import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
 
 @Component({
 	selector: 'app-root',
@@ -10,37 +10,44 @@ import { Component } from '@angular/core';
 	changeDetection: CHANGE_DETECTION,
 })
 export class AppComponent {
-	constructor(private readonly loggerService: LoggerService) {}
+	noop: boolean;
+
+	@ViewChild('logResultsBtn') logResultsBtn!: ElementRef;
+
+	constructor(private readonly loggerService: LoggerService, private readonly ngZone: NgZone) {
+		this.noop = !(ngZone instanceof NgZone);
+	}
 
 	ngDoCheck() {
 		this.loggerService.startCycle();
 	}
 
-	// ngOnChanges() {
-	// 	console.log('OnChanges');
-	// }
-
-	// ngOnChecked() {
-	// 	console.log('OnCheck');
-	// }
-
-	// ngAfterContentInit() {
-	// 	console.log('AfterContentInit');
-	// }
-
-	// ngAfterContentChecked() {
-	// 	console.log('AfterContentChecked');
-	// }
-
-	// ngAfterViewInit() {
-	// 	console.log('AfterViewInit');
-	// }
-
 	ngAfterViewChecked() {
 		this.loggerService.endCycle();
 	}
 
-	// ngOnDestroy() {
-	// 	console.log('OnDestroy');
-	// }
+	switchZones() {
+		const key = 'ng-zone';
+		if (localStorage.getItem(key)) {
+			localStorage.removeItem(key);
+		} else {
+			localStorage.setItem(key, 'true');
+		}
+
+		window.location.reload();
+	}
+
+	ngAfterViewInit() {
+		if (!this.noop) {
+			this.ngZone.runOutsideAngular(() => {
+				this.logResultsBtn.nativeElement.addEventListener('click', () => {
+					this.loggerService.logResults();
+				});
+			});
+		} else {
+			this.logResultsBtn.nativeElement.addEventListener('click', () => {
+				this.loggerService.logResults();
+			});
+		}
+	}
 }
