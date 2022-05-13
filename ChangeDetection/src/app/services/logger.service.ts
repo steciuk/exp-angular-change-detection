@@ -23,6 +23,7 @@ export class LoggerService {
 		console.log('-----------------------');
 		const cycleTime = performance.now() - this.start;
 		console.log('Main cycle took', Math.round(cycleTime), 'ms');
+		this.logResults();
 	}
 
 	notifyOfRender(componentId: string) {
